@@ -1,0 +1,26 @@
+server:
+  tomcat:
+    threads:
+      min-spare: 200
+      max: 200
+
+spring:
+  #DB
+  #Local DB Source
+  datasource:
+    url: jdbc:mysql://localhost:23306/viewcount-db
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: mysql
+    properties:
+      hibernate:
+        show_sql: true
+    #        format_sql: true
+    defer-datasource-initialization: true
+    generate-ddl: true
+    open-in-view: false
