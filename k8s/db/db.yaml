@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: viewcount-mysql
+  labels:
+    app: viewcount-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: viewcount-mysql
+  template:
+    metadata:
+      labels:
+        app: viewcount-mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0.33
+          args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "1234"
+            - name: MYSQL_DATABASE
+              value: viewcount-db
+          ports:
+            - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: viewcount-mysql
+spec:
+  selector:
+    app: viewcount-mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+      name: mysql
