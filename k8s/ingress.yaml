@@ -16,4 +16,4 @@ spec:
               service:
                 name: viewcount
                 port:
-                  number: 8080
+                  name: http
