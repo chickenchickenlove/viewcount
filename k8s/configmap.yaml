@@ -1,6 +1,11 @@
 apiVersion: v1
 data:
   application.yaml: |+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: "prometheus,health,metrics"    
     server:
       tomcat:
         threads:
