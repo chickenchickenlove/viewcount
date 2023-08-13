@@ -24,6 +24,7 @@ public class MyServiceV3 {
         Store store = myRepository.findStore(storeId);
         Customer customer = myRepository.findCustomer(customerId);
 
+        // 네임드락 획득
         final String lockName = customerId + "-" + storeId;
 
         boolean acquireLock = false;
@@ -44,8 +45,8 @@ public class MyServiceV3 {
                 myRepository.findCustomerStoreVisitByCondition(customerId, storeId, now);
 
         if (customerStoreVisitByCondition != null) {
-            log.info("already exist");
-            log.info("release lock");
+            log.info("already exist. release lock.");
+            // 네임드락 반납
             myRepository.releaseNamedLock(lockName);
             return;
         }
@@ -53,6 +54,14 @@ public class MyServiceV3 {
         CustomerStoreVisit customerStoreVisit = CustomerStoreVisit.create(customer, store, now);
         myRepository.saveCustomerStoreVisit(customerStoreVisit);
 
+        addStoreViewCount(storeId, now, store);
+
+        // 네임드락 반납
+        myRepository.releaseNamedLock(lockName);
+        log.info("release lock");
+    }
+
+    private void addStoreViewCount(Long storeId, LocalDate now, Store store) {
         StoreViewCount findSVC = myRepository.findStoreViewCount(storeId, now);
         if (findSVC != null) {
             findSVC.add();
@@ -66,8 +75,5 @@ public class MyServiceV3 {
         storeViewCount.add();
 
         myRepository.saveStoreViewCount(storeViewCount);
-        myRepository.releaseNamedLock(lockName);
-        log.info("release lock");
-        return;
     }
 }
