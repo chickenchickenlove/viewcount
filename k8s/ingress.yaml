@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: viewcount
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: <YOUR_HOST>
+      http:
+        paths:
+          - path: /viewcount-test(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: viewcount
+                port:
+                  number: 8080

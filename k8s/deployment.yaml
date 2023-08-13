@@ -1,4 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
-
-
+metadata:
+  name: viewcount
+  labels:
+    app: viewcount
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: viewcount
+  template:
+    metadata:
+      labels:
+        app: viewcount
+    spec:
+      initContainers:
+        - name: db-init
+          image: ojt90902/db-initcontainer:latest
+          args: ["viewcount-mysql", "3306"]
+      containers:
+        - name: viewcount
+          imagePullPolicy: Always
+          image: ojt90902/viewcount-test:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: viewcount
+              mountPath: config
+              readOnly: true
+          args:
+            - -Dspring.config.location=/config/application.yaml
+      volumes:
+        - name: viewcount
+          configMap:
+            name: viewcount

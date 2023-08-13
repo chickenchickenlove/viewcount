@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+  application.yaml: |+
+    server:
+      tomcat:
+        threads:
+          min-spare: 100
+          max: 100
+    spring:
+      #DB
+      #Local DB Source
+      datasource:
+        url: jdbc:mysql://viewcount-mysql:3306/viewcount-db
+        username: root
+        password: 1234
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: none
+      database: mysql
+      properties:
+        hibernate:
+          show_sql: true
+      #        format_sql: true
+      generate-ddl: true
+      open-in-view: false
+kind: ConfigMap
+metadata:
+  name: viewcount
