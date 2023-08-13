@@ -1,5 +1,18 @@
 
 
+ALTER TABLE customer_store_visit DROP FOREIGN KEY FKkysw2f23y5m5mgvxuy7c5tfnq;
+ALTER TABLE customer_store_visit DROP FOREIGN KEY FKf6iqsj26kwrloi6t6o7gwmfos;
+ALTER TABLE store_view_count DROP FOREIGN KEY FKlunp0cwxjbvpqfd5i8nb7u74m;
+ALTER TABLE store_view_count DROP FOREIGN KEY FKr55eyph82sfknw321ypak4b2d;
+
+DROP TABLE IF EXISTS customer_store_visit;
+DROP TABLE IF EXISTS store_view_count;
+
+DROP TABLE IF EXISTS store;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS hibernate_sequence;
+DROP TABLE IF EXISTS view_count;
+
 create table customer (customer_id bigint not null, name varchar(255), primary key (customer_id)) engine=InnoDB;
 create table customer_store_visit (customer_store_visit bigint not null, visit_date date, customer_customer_id bigint, store_store_id bigint, primary key (customer_store_visit)) engine=InnoDB;
 create table hibernate_sequence (next_val bigint) engine=InnoDB;
